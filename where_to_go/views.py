@@ -1,9 +1,29 @@
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render
+from places.models import *
 
 
 def show_index(request):
-    template = loader.get_template('index.html')
-    context = {}
-    rendered_page = template.render(context, request)
-    return HttpResponse(rendered_page)
+    features = []
+    places = Place.objects.all()
+    for place in places:
+        coordinates = [place.lng, place.lat]
+        features.append({
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': coordinates
+            },
+            'properties': {
+                'title': place.title,
+                'placeId': place.placeId,
+                'detailsUrl': f'static/places/{place.placeId}.json'
+            }
+        })
+    data = {
+      'type': 'FeatureCollection',
+      'features': features
+    }
+
+    return render(request,
+                  'index.html',
+                  context={'title_company_json': data})
