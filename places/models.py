@@ -26,5 +26,8 @@ class Image(models.Model):
     )
     image = models.ImageField(verbose_name='Изображение')
 
+    class Meta(object):
+        ordering = ['image_number']
+
     def __str__(self):
         return '{} {}'.format(self.image_number, self.title)

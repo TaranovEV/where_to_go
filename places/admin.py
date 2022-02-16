@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import Place, Image
 from django.utils.safestring import mark_safe
+from adminsortable2.admin import SortableInlineAdminMixin
 
 
-class ImageInline(admin.TabularInline):
+class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
     readonly_fields = ['preview_image']
     fields = ('image', 'preview_image', 'image_number')
