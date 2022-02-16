@@ -139,3 +139,4 @@ cython_debug/
 
 image_place/
 media/
+static/places

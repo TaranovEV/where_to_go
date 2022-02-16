@@ -1,33 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.urls import reverse
 from places.models import *
-
-
-def show_index(request):
-    features = []
-    places = Place.objects.all()
-    for place in places:
-        coordinates = [place.lng, place.lat]
-        features.append({
-            'type': 'Feature',
-            'geometry': {
-                'type': 'Point',
-                'coordinates': coordinates
-            },
-            'properties': {
-                'title': place.title,
-                'placeId': place.placeId,
-                'detailsUrl': f'static/places/{place.placeId}.json'
-            }
-        })
-    data = {
-      'type': 'FeatureCollection',
-      'features': features
-    }
-
-    return render(request,
-                  'index.html',
-                  context={'title_company_json': data})
 
 
 def show_place(request, place_id):
@@ -49,3 +23,29 @@ def show_place(request, place_id):
                             'ensure_ascii': False,
                             'indent': 2
                         })
+
+
+def show_index(request):
+    features = []
+    places = Place.objects.all()
+    for place in places:
+        coordinates = [place.lng, place.lat]
+        features.append({
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': coordinates
+            },
+            'properties': {
+                'title': place.title,
+                'placeId': place.placeId,
+                'detailsUrl': reverse('place-geojson', args=[place.id])
+            }
+        })
+    data = {
+      'type': 'FeatureCollection',
+      'features': features
+    }
+    return render(request,
+                  'index.html',
+                  context={'title_company_json': data})
