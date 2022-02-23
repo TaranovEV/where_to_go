@@ -38,6 +38,16 @@
   ```
   http://127.0.0.1:8000/admin
   ``` 
+Для загрузки контента возможнео применение кастомной комманды `load_place`   
+
+В этом случае необходимо указать обязательный аргумент:  
+  
+  `json` - (*type:str*) url адрес файла JSON  
+  *Например:*   
+   ```
+  python manage.py load_place https://github.com/devmanorg/where-to-go-places/blob/master/places/%D0%90%D0%BD%D1%82%D0%B8%D0%BA%D0%B0%D1%84%D0%B5%20Bizone.json  
+   ```   
+  
 ## Настройки
 
 Внизу справа на странице можно включить отладочный режим логгирования.
