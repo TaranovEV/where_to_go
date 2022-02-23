@@ -6,7 +6,8 @@ class Place(models.Model):
     title = models.CharField(max_length=200,
                              verbose_name='Название')
     placeId = models.CharField(max_length=200,
-                               verbose_name='Id')
+                               verbose_name='Id',
+                               unique=True)
     description_short = models.CharField(max_length=300,
                                          verbose_name='Краткое описание')
     description_long = HTMLField(verbose_name='Полное описание')
