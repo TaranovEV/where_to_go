@@ -3,7 +3,7 @@
 {% load static %}
 <head>
   <meta charset="utf-8">
-  <title>Куда пойти — Москва глазами Артёма</title>
+  <title>Куда пойти</title>
 
   <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/png">
 
@@ -38,7 +38,7 @@
       width: 100px;
     }
   </style>
-  {{ title_company_json|json_script:"places-geojson" }}
+  {{ places_with_atributes|json_script:"places-geojson" }}
 
 
   <script id="app-template" type="text/template">
@@ -59,7 +59,6 @@
         <img v-if="mainPhotoSrc" v-bind:src="mainPhotoSrc" class="d-block shadow mb-3 rounded" v-bind:alt="selectedPlace.title">
         {% verbatim %}
           <h5 class="mb-3">{{ selectedPlace.title }}</h5>
-
           <p>{{ selectedPlace.short_description }}</p>
         {% endverbatim %}
         <div id="place-photos" class="carousel slide mb-3 shadow" data-ride="carousel" data-interval="5000">

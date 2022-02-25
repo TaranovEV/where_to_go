@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.urls import reverse
-from places.models import *
+from places.models import Place
 
 
 def show_place(request, place_id):
     place = get_object_or_404(Place, id=place_id)
-    data = {
+    place_fields = {
         'title': place.title,
         'imgs': [images.image.url for images in place.imgs.all()],
         'description_short': place.description_short,
@@ -17,7 +17,7 @@ def show_place(request, place_id):
         }
     }
 
-    return JsonResponse(data,
+    return JsonResponse(place_fields,
                         safe=False,
                         json_dumps_params={
                             'ensure_ascii': False,
@@ -38,14 +38,14 @@ def show_index(request):
             },
             'properties': {
                 'title': place.title,
-                'placeId': place.placeId,
+                'placeId': place.place_id,
                 'detailsUrl': reverse('place-geojson', args=[place.id])
             }
         })
-    data = {
+    places_with_atributes = {
       'type': 'FeatureCollection',
       'features': features
     }
     return render(request,
                   'index.html',
-                  context={'title_company_json': data})
+                  context={'places_with_atributes': places_with_atributes})
