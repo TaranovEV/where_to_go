@@ -24,7 +24,8 @@ class Image(models.Model):
                               related_name='imgs',
                               on_delete=models.CASCADE)
     image_number = (
-        models.PositiveSmallIntegerField(verbose_name='Номер изображения')
+        models.PositiveSmallIntegerField(verbose_name='Номер изображения',
+                                         default=1)
     )
     image = models.ImageField(verbose_name='Изображение')
 
@@ -32,4 +33,4 @@ class Image(models.Model):
         ordering = ['image_number']
 
     def __str__(self):
-        return '{} {}'.format(self.image_number, self.title)
+        return '{} {}'.format(self.image_number, self.place)
