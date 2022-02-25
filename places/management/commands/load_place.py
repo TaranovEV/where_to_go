@@ -19,24 +19,25 @@ class Command(BaseCommand):
                         type=str,)
 
     def handle(self, *args, **options):
-        response = requests.get(options.get('json')).json()
+        response = requests.get(options.get('json'))
         check_for_redirect(response)
         response.raise_for_status()
+        place_from_url = response.json()
         place, created = Place.objects.get_or_create(
-            title = response['title'],
-            placeId = response['title'],
-            lng = response['coordinates']['lng'],
-            lat = response['coordinates']['lat'],
+            title = place_from_url['title'],
+            placeId = place_from_url['title'],
+            lng = place_from_url['coordinates']['lng'],
+            lat = place_from_url['coordinates']['lat'],
             defaults={
                 'description_short': '',
                 'description_long': '',},
         )
         iter = 1
-        for image_url in response['imgs']:
+        for image_url in place_from_url['imgs']:
             filename = os.path.basename(image_url)
             image_response = requests.get(image_url)
             check_for_redirect(image_response)
-            response.raise_for_status()
+            image_response.raise_for_status()
             obj, created = Image.objects.get_or_create(title=place, image_number=iter)
             obj.image.save(filename, ContentFile(image_response.content))
             obj.save()
