@@ -32,13 +32,12 @@ class Command(BaseCommand):
                 'description_short': '',
                 'description_long': '',},
         )
-        iter = 1
-        for image_url in place_from_url['imgs']:
+        for image_number, image_url in enumerate(place_from_url['imgs'], 1):
             filename = os.path.basename(image_url)
             image_response = requests.get(image_url)
             check_for_redirect(image_response)
             image_response.raise_for_status()
-            obj, created = Image.objects.get_or_create(title=place, image_number=iter)
+            obj, created = Image.objects.get_or_create(title=place,
+                                                       image_number=image_number)
             obj.image.save(filename, ContentFile(image_response.content))
             obj.save()
-            iter+=1
