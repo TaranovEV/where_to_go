@@ -22,8 +22,7 @@ class Place(models.Model):
 class Image(models.Model):
     place = models.ForeignKey(Place,
                               related_name='imgs',
-                              null=True,
-                              on_delete=models.SET_NULL)
+                              on_delete=models.CASCADE)
     image_number = (
         models.PositiveSmallIntegerField(verbose_name='Номер изображения')
     )
