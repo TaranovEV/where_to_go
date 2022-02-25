@@ -1,5 +1,6 @@
 import os
 import requests
+from urllib.parse import urlsplit, unquote
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.base import ContentFile
 from places.models import Place, Image
@@ -33,11 +34,12 @@ class Command(BaseCommand):
                 'description_long': '',},
         )
         for image_number, image_url in enumerate(place_from_url['imgs'], 1):
-            filename = os.path.basename(image_url)
+            path, filename = (
+                os.path.split(unquote(urlsplit(image_url).path))
+            )
             image_response = requests.get(image_url)
             check_for_redirect(image_response)
             image_response.raise_for_status()
-            obj, created = Image.objects.get_or_create(title=place,
+            place_image, created = Image.objects.get_or_create(title=place,
                                                        image_number=image_number)
-            obj.image.save(filename, ContentFile(image_response.content))
-            obj.save()
+            place_image.image.save(filename, ContentFile(image_response.content))
