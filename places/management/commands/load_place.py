@@ -7,10 +7,6 @@ from places.models import Place, Image
 
 
 
-def check_for_redirect(response):
-    if response.history:
-        raise requests.HTTPError
-
 class Command(BaseCommand):
     help = 'Add place in DB'
 
@@ -21,7 +17,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         response = requests.get(options.get('json'))
-        check_for_redirect(response)
         response.raise_for_status()
         place_from_url = response.json()
         place, created = Place.objects.get_or_create(
@@ -38,7 +33,6 @@ class Command(BaseCommand):
                 os.path.split(unquote(urlsplit(image_url).path))
             )
             image_response = requests.get(image_url)
-            check_for_redirect(image_response)
             image_response.raise_for_status()
             place_image, created = Image.objects.get_or_create(title=place,
                                                        image_number=image_number)

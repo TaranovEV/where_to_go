@@ -14,8 +14,9 @@ class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
         return (
             format_html(
                 mark_safe(
-                    f'<img src="{obj.image.url}" style="max-height: 200px;">'
-                )
+                    '<img src="{}" style="max-height: 200px;">'
+                ),
+                obj.image.url
             )
         )
 
