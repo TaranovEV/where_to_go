@@ -3,8 +3,8 @@ from .models import Place, Image
 from django.utils.html import format_html
 from adminsortable2.admin import SortableInlineAdminMixin
 
-
 class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
+
     model = Image
     readonly_fields = ['preview_image']
     fields = ('image', 'preview_image', 'image_number')
@@ -24,4 +24,6 @@ class PlaceAdmin(admin.ModelAdmin):
     ]
 
 
-admin.site.register(Image)
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    pass
